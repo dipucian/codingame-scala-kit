@@ -44,9 +44,13 @@ case class StdBundlerIo(srcFolder: String = "./src/main/scala")
   }
 
   def save(fileName: String, content: String): Unit = {
-    val destFolder: String = "./target"
-    val destFile = new File(destFolder, fileName)
+    val targetFolder: String = "./target"
+    val destFile = new File(targetFolder, fileName)
+    val destFolder = destFile.getParentFile.toPath
+    println(s"creating directory $destFolder")
+    Files.createDirectories(destFolder)
     val pw = new PrintWriter(destFile)
+    println(s"save $fileName")
     try {
       println(s"writing to $destFile")
       pw.write(content)
