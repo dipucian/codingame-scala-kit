@@ -1,9 +1,8 @@
 package com.truelaurel.codingame.tool.bundle
 
 import java.io.{File, PrintWriter}
-import java.nio.file.{Files, Paths, FileVisitOption}
+import java.nio.file.{FileVisitOption, Files, Path, Paths}
 import java.util.Objects
-
 import scala.io.Source
 import scala.util.control.NonFatal
 
@@ -45,10 +44,11 @@ case class StdBundlerIo(srcFolder: String = "./src/main/scala")
 
   def save(fileName: String, content: String): Unit = {
     val destFolder: String = "./target"
-    val destFile = new File(destFolder, fileName)
-    val pw = new PrintWriter(destFile)
+    val dest = Path.of(destFolder, fileName)
+    dest.getParent.toFile.mkdirs()
+    val pw = new PrintWriter(dest.toFile)
     try {
-      println(s"writing to $destFile")
+      println(s"writing to $dest")
       pw.write(content)
     } finally pw.close()
 
